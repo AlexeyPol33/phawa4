@@ -2,25 +2,27 @@ class FlatIterator:
 
     def __init__(self, list_of_list):
         self.list_of_list = list_of_list
-        print(self.list_of_list)
-
+        self.start = 0
+        self.end = len(list_of_list) - 1
 
     def __iter__(self):
-        print('начало итерации')
-        
         self.items = self.list_of_list
+        self.items_start = 0
+        self.items_end = len(self.items)
         if self.items:
-            self.items = self.list_of_list.pop(0)
-        
+            self.items = self.list_of_list[self.start]
         return self
 
     def __next__(self):
-        if not self.list_of_list and not self.items:
+        if self.start == self.end and self.items_start == self.items_end:
             raise StopIteration
-        if not self.items:
-            self.items = self.list_of_list.pop(0)
-        item = self.items.pop(0)
-        print(item)
+        if self.items_start == self.items_end:
+            self.start +=1
+            self.items = self.list_of_list[self.start]
+            self.items_start = 0
+            self.items_end = len(self.items)
+        item = self.items[self.items_start]
+        self.items_start += 1
         return item
 
 
@@ -38,9 +40,10 @@ def test_1():
     ):
 
         assert flat_iterator_item == check_item
-
     assert list(FlatIterator(list_of_lists_1)) == ['a', 'b', 'c', 'd', 'e', 'f', 'h', False, 1, 2, None]
+    
 
 
 if __name__ == '__main__':
     test_1()
+    print('успешно')
