@@ -53,3 +53,4 @@ def test_3():
 
 if __name__ == '__main__':
     test_3()
+    print('успешно')
